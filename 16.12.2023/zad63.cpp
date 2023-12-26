@@ -29,5 +29,24 @@ int main()
     studenci.push_back(s4);
     studenci.push_back(s5);
     
+    
+    for (int i = 0; i < studenci.size() - 1; i++)
+    {
+        for (int j = 0; j < studenci.size() - i - 1; j++)
+        {
+            if (studenci[j].numer_indeksu > studenci[j + 1].numer_indeksu)
+            {
+                student temp = studenci[j];
+                studenci[j] = studenci[j + 1];
+                studenci[j + 1] = temp;
+            }
+        }
+    }
+    
+    for (int i = 0; i < studenci.size(); i++)
+    {
+        cout << studenci[i].name << " " << studenci[i].nazwisko << " " << studenci[i].numer_indeksu << endl;
+    }
+    
     return 0;
 }
