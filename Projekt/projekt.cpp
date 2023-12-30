@@ -5,6 +5,17 @@
 
 using namespace std;
 
+vector<vector<int>> next_three_ways(const vector<vector<int>>& table, int row, int column) {
+    
+    vector<vector<int>> vec;
+    
+    
+    
+    
+    return vec
+    
+}
+
 int main() {
     
     srand(time(0));
