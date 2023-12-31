@@ -1,0 +1,19 @@
+function (2D_table, row, column) {
+
+  next_three_numbers = {}
+
+  if column + 1 <= 2D_table.columns then
+    if row - 1 >= 0 then
+      next_three_numbers.append(2D_table[row - 1][column + 1])
+    else
+      next_three_numbers.append(null)
+
+    next_three_numbers.append(2D_table[row][column + 1])
+
+    if row + 1 <= 2D_table.rows then
+      next_three_numbers.append(2D_table[row + 1][column + 1])
+    else
+      next_three_numbers.append(null)
+
+return next_three_numbers
+}
