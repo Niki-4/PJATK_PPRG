@@ -2,22 +2,64 @@
 #include <vector>
 #include <cstdlib>
 #include <ctime> 
+#include <utility>
 
 using namespace std;
 
-vector<vector<int>> next_three_ways(const vector<vector<int>>& table, int row, int column) {
-    
-    vector<vector<int>> vec;
-    
-    
-    
-    
-    return vec
-    
+// Forward declaration of get_next_positions
+vector<pair<int, int>> get_next_positions(pair<int, int> position, vector<vector<int>>& matrix);
+
+vector<vector<int>> findAllPaths(vector<vector<int>>& matrix, pair<int, int> position, vector<int> path) {
+    // Add the current position to the path
+    path.push_back(matrix[position.first][position.second]);
+
+    // If the current position is at the rightmost column, return the path
+    if (position.second == matrix[0].size() - 1) {
+        return vector<vector<int>>{path};
+    }
+
+    // Initialize the list of all paths
+    vector<vector<int>> all_paths;
+
+    // Get the possible next positions (right, up, down)
+    vector<pair<int, int>> next_positions = get_next_positions(position, matrix);
+
+    // For each next position
+    for (pair<int, int> next_position : next_positions) {
+        // Recursively find all paths from the next position
+        vector<int> new_path(path);
+        vector<vector<int>> paths_from_next_position = findAllPaths(matrix, next_position, new_path);
+
+        // Add the paths from the next position to the list of all paths
+        all_paths.insert(all_paths.end(), paths_from_next_position.begin(), paths_from_next_position.end());
+    }
+
+    return all_paths;
+}
+
+// Definition of get_next_positions
+vector<pair<int, int>> get_next_positions(pair<int, int> position, vector<vector<int>>& matrix) {
+    // Get the row and column indices
+    int row = position.first, col = position.second;
+
+    // Initialize the list of next positions with the position to the right
+    vector<pair<int, int>> next_positions = {make_pair(row, col + 1)};
+
+    // If it's possible to move up, add the position diagonally up-right to the list
+    if (row > 0) {
+        next_positions.push_back(make_pair(row - 1, col + 1));
+    }
+
+    // If it's possible to move down, add the position diagonally down-right to the list
+    if (row < matrix.size() - 1) {
+        next_positions.push_back(make_pair(row + 1, col + 1));
+    }
+
+    return next_positions;
 }
 
 int main() {
-    
+
     srand(time(0));
     int rows, cols;
     cout << "Enter number of rows: ";
@@ -35,6 +77,7 @@ int main() {
         }
     }
 
+    cout << "Table of random numbers:" << endl;
     // print the table
     for(int i = 0; i < rows; i++) {
         for(int j = 0; j < cols; j++) {
@@ -42,22 +85,19 @@ int main() {
         }
         cout << endl;
     }
-    
-    // vector containing possible ways through table
-    vector<vector<int>> ways(0, vector<int>(cols)); 
-    
-    //fill ways vector with one rows ways
+
+    // Call findAllPaths for each cell in the first column of the matrix
+    vector<vector<int>> all_paths;
     for(int i = 0; i < rows; i++) {
-        ways.push_back(vector<int>());
-        for(int j = 0; j < cols; j++) {
-            ways[i].push_back(table[i][j]);
-        }
+        vector<vector<int>> paths_from_cell = findAllPaths(table, make_pair(i, 0), {});
+        all_paths.insert(all_paths.end(), paths_from_cell.begin(), paths_from_cell.end());
     }
-    
-    // print the ways
-    for(int i = 0; i < rows; i++) {
-        for(int j = 0; j < cols; j++) {
-            cout << ways[i][j] << " ";
+
+    cout << "All paths:" << endl;
+    // Print all paths
+    for(const auto& path : all_paths) {
+        for(int num : path) {
+            cout << num << " ";
         }
         cout << endl;
     }
