@@ -3,6 +3,7 @@
 #include <cstdlib>
 #include <ctime> 
 #include <utility>
+#include <climits>
 
 using namespace std;
 
@@ -101,6 +102,31 @@ int main() {
         }
         cout << endl;
     }
+    
+        // Initialize the minimum sum and the path with the minimum sum
+    int min_sum = INT_MAX;
+    vector<int> min_path;
+
+    // Iterate over all paths
+    for (vector<int>& path : all_paths) {
+        // Calculate the sum of the current path
+        int sum = 0;
+        for (int num : path) {
+            sum += num;
+        }
+
+        // If the sum of the current path is less than the minimum sum, update the minimum sum and the path
+        if (sum < min_sum) {
+            min_sum = sum;
+            min_path = path;
+        }
+    }
+
+    cout << "The path with the smallest sum is: ";
+    for (int num : min_path) {
+        cout << num << " ";
+    }
+    cout << "\nThe smallest sum is: " << min_sum << endl;
 
     return 0;
 }
